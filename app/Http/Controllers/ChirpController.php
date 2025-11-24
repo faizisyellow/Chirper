@@ -67,8 +67,6 @@ class ChirpController extends Controller
      */
     public function edit(Chirp $chirp)
     {
-        // We'll add authorization in lesson 11
-
         return view("chirps.edit", compact("chirp"));
     }
 
