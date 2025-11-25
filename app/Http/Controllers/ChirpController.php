@@ -28,8 +28,6 @@ class ChirpController extends Controller
      */
     public function create()
     {
-        //
-        echo "GOT IT";
         return view("home", ["chirps" => []]);
     }
 
