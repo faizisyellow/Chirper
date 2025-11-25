@@ -5,11 +5,13 @@ use App\Http\Controllers\Auth\Logout;
 use App\Http\Controllers\Auth\Register;
 use App\Http\Controllers\Auth\RequestResetPassword;
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Profile\Account;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", [ChirpController::class, "index"]);
+Route::get("/chirps/{chirp}", [ChirpController::class, "show"]);
 
 // Protected routes
 Route::middleware("auth")->group(function () {
@@ -17,6 +19,8 @@ Route::middleware("auth")->group(function () {
     Route::get("/chirps/{chirp}/edit", [ChirpController::class, "edit"]);
     Route::put("/chirps/{chirp}", [ChirpController::class, "update"]);
     Route::delete("/chirps/{chirp}", [ChirpController::class, "destroy"]);
+
+    Route::post("/comments", [CommentController::class, "store"]);
 });
 
 // Registration routes

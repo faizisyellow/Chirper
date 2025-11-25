@@ -58,7 +58,7 @@ class ChirpController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view("chirps.detail", ["chirp" => (int) $id]);
     }
 
     /**

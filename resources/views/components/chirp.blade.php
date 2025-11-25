@@ -1,6 +1,7 @@
 
 @props(['chirp'])
 
+<a href="/chirps/{{$chirp->id}}" class="px-1">
 <div class="card bg-base-100 shadow">
     <div class="card-body">
         <div class="flex space-x-3">
@@ -54,3 +55,4 @@
         </div>
     </div>
 </div>
+</a>
