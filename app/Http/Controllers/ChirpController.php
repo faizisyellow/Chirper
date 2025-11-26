@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Redirect;
 
 class ChirpController extends Controller
 {
@@ -58,7 +55,13 @@ class ChirpController extends Controller
      */
     public function show(string $id)
     {
-        return view("chirps.detail", ["chirp" => (int) $id]);
+        $serializedId = (int) $id;
+
+        $chirp = Chirp::with("comments")->find($serializedId);
+
+        return view("chirps.detail", [
+            "chirp" => $chirp,
+        ]);
     }
 
     /**
