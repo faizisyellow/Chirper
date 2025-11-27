@@ -3,19 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use App\Services\Chirps\ChirpsService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class ChirpController extends Controller
 {
     use AuthorizesRequests;
+
+    private ChirpsService $chirpsService;
+
+    public function __construct(ChirpsService $chirpsService)
+    {
+        $this->chirpsService = $chirpsService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-
     public function index()
     {
-        $chirps = Chirp::with("user")->latest()->take(50)->get();
+        $chirps = $this->chirpsService->get();
 
         return view("home", ["chirps" => $chirps]);
     }
@@ -44,7 +52,7 @@ class ChirpController extends Controller
             ],
         );
 
-        $request->user()->chirps()->create($validated);
+        $this->chirpsService->create($request->user(), $validated);
 
         // Redirect back to the feed
         return redirect("/")->with("success", "Chirp created!");
@@ -89,7 +97,7 @@ class ChirpController extends Controller
             "message" => "required|string|max:255",
         ]);
 
-        $chirp->update($validated);
+        $this->chirpsService->update($chirp, $validated);
 
         return redirect("/")->with("success", "Chirp updated!");
     }
@@ -100,7 +108,7 @@ class ChirpController extends Controller
     public function destroy(Chirp $chirp)
     {
         $this->authorize("delete", $chirp);
-        $chirp->delete();
+        $this->chirpsService->delete($chirp);
 
         return redirect("/")->with("success", "Chirp deleted!");
     }
